@@ -1,0 +1,38 @@
+# Backend
+backend/.env
+backend/data/
+backend/logs/
+backend/.venv/
+backend/__pycache__/
+backend/src/**/__pycache__/
+backend/tests/__pycache__/
+backend/.pytest_cache/
+*.pyc
+
+# Test fixtures with real student data (never commit)
+backend/tests/fixtures/grader_sample.html
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Capturas de red: traen cookies, tokens y a veces contraseñas
+*.har
+
+# Configuración local de agentes
+.claude/
+.agents/
+# Muestras HTML reales del LMS (tienen datos de aprendices)
+docs/html-samples/

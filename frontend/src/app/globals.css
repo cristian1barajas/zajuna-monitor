@@ -1,0 +1,355 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   SENA Design System → shadcn/Tailwind mapping
+   Fuente: Brandbook SENA 2022 (R_SENA_1910_2022-MANUAL)
+   Tokens origen: SENA Design System/colors_and_type.css
+   ============================================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-work-sans);
+  --font-mono: var(--font-jetbrains-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Paleta de marca SENA — habilita utilidades tipo bg-sena-green,
+     text-sena-navy, etc. Los valores viven en :root/.dark para que
+     el modo oscuro los ajuste (el verde se aclara sobre fondo oscuro). */
+  --color-sena-green: var(--sena-green);
+  --color-sena-green-dark: var(--sena-green-dark);
+  --color-sena-green-darker: var(--sena-green-darker);
+  --color-sena-green-light: var(--sena-green-light);
+  --color-sena-green-tint: var(--sena-green-tint);
+  --color-sena-navy: var(--sena-navy);
+  --color-sena-beige: var(--sena-beige);
+  --color-sena-deep-green: var(--sena-deep-green);
+  --color-sena-coral: var(--sena-coral);
+  --color-sena-coral-dark: var(--sena-coral-dark);
+  --color-sena-yellow: var(--sena-yellow);
+  --color-sena-sky: var(--sena-sky);
+
+  /* Estados de dominio (semáforo de calificaciones, resultados RAP,
+     severidad de alertas, debido proceso). Cada familia: solid (DEFAULT),
+     -soft (fondo tinte), -fg (texto AA sobre blanco y sobre -soft),
+     -border. Los valores flipan en .dark automáticamente. */
+  --color-ok: var(--status-ok);
+  --color-ok-soft: var(--status-ok-soft);
+  --color-ok-fg: var(--status-ok-fg);
+  --color-ok-border: var(--status-ok-border);
+  --color-warn: var(--status-warn);
+  --color-warn-soft: var(--status-warn-soft);
+  --color-warn-fg: var(--status-warn-fg);
+  --color-warn-border: var(--status-warn-border);
+  --color-caution: var(--status-caution);
+  --color-caution-soft: var(--status-caution-soft);
+  --color-caution-fg: var(--status-caution-fg);
+  --color-caution-border: var(--status-caution-border);
+  --color-danger: var(--status-danger);
+  --color-danger-soft: var(--status-danger-soft);
+  --color-danger-fg: var(--status-danger-fg);
+  --color-danger-border: var(--status-danger-border);
+  --color-info: var(--status-info);
+  --color-info-soft: var(--status-info-soft);
+  --color-info-fg: var(--status-info-fg);
+  --color-info-border: var(--status-info-border);
+  --color-notice: var(--status-notice);
+  --color-notice-soft: var(--status-notice-soft);
+  --color-notice-fg: var(--status-notice-fg);
+  --color-notice-border: var(--status-notice-border);
+  --color-pending: var(--status-pending);
+  --color-pending-soft: var(--status-pending-soft);
+  --color-pending-fg: var(--status-pending-fg);
+  --color-pending-border: var(--status-pending-border);
+
+  /* Derivados de marca para superficies navy (panel de login) y la
+     franja de identificación del gobierno colombiano. Valores en
+     :root/.dark siguiendo la convención del resto de la paleta. */
+  --color-on-navy: var(--on-navy);
+  --color-on-navy-muted: var(--on-navy-muted);
+  --color-on-navy-faint: var(--on-navy-faint);
+  --color-navy-hairline: var(--navy-hairline);
+  --color-navy-deep: var(--navy-deep);
+  --color-flag-yellow: var(--flag-yellow);
+  --color-flag-blue: var(--flag-blue);
+  --color-flag-red: var(--flag-red);
+
+  /* Lenguaje SI Contratista: superficie teal (sidebar, hero, banners de
+     perfil), verde activo AA para pastillas con texto blanco y sombras
+     suaves de tarjeta sobre el fondo gris azulado. */
+  --color-sena-teal: var(--sena-teal);
+  --color-sena-teal-deep: var(--sena-teal-deep);
+  --color-sena-teal-light: var(--sena-teal-light);
+  --color-on-teal: var(--on-teal);
+  --color-on-teal-muted: var(--on-teal-muted);
+  --color-teal-hairline: var(--teal-hairline);
+  --color-active-pill: var(--active-pill);
+  --color-table-head: var(--table-head);
+  --shadow-card: var(--elevation-card);
+  --shadow-pop: var(--elevation-pop);
+}
+
+:root {
+  /* SI Contratista: tarjetas redondeadas (lg = 12px, xl = 16px) */
+  --radius: 0.75rem;
+
+  /* ---------- Paleta SENA (light) ---------- */
+  --sena-green: #39A900;        /* Pantone 633C — la marca */
+  --sena-green-dark: #2B7A00;   /* texto pequeño sobre blanco (AA) */
+  --sena-green-darker: #1F5600;
+  --sena-green-light: #6FCC3A;
+  --sena-green-tint: #EBF7E0;
+  --sena-navy: #00324D;         /* Pantone 5477C */
+  --sena-beige: #FBFBE2;        /* Pantone 7591C */
+  --sena-deep-green: #385C57;   /* Pantone 635C */
+  --sena-coral: #CB7766;        /* Pantone 7463C */
+  --sena-coral-dark: #A4513B;   /* derivado — coral legible como texto/fondo */
+  --sena-yellow: #FFCE40;       /* Pantone 122C */
+  --sena-sky: #82DEF0;          /* Pantone 361C */
+
+  /* ---------- Estados de dominio (light) ----------
+     Derivados de la paleta SENA: ok=verde, warn=amarillo,
+     caution=ocre derivado (escalas de severidad), danger=coral,
+     info=cielo, notice=navy (categorías destacadas), pending=gris. */
+  --status-ok: #39A900;
+  --status-ok-soft: #EBF7E0;
+  --status-ok-fg: #2B7A00;
+  --status-ok-border: #C9EAB0;
+  --status-warn: #FFCE40;
+  --status-warn-soft: #FFF4D1;
+  --status-warn-fg: #8A6D00;
+  --status-warn-border: #F0DFA0;
+  --status-caution: #D98E36;
+  --status-caution-soft: #F9EDDC;
+  --status-caution-fg: #935B10;
+  --status-caution-border: #EDD3AE;
+  --status-danger: #CB7766;
+  --status-danger-soft: #F9ECE8;
+  --status-danger-fg: #A4513B;
+  --status-danger-border: #ECCFC6;
+  --status-info: #82DEF0;
+  --status-info-soft: #E9F8FC;
+  --status-info-fg: #17677D;
+  --status-info-border: #BCE9F4;
+  --status-notice: #00324D;
+  --status-notice-soft: #E8F0F5;
+  --status-notice-fg: #00324D;
+  --status-notice-border: #C3D6E2;
+  --status-pending: #B5B5B5;
+  --status-pending-soft: #F2F2F2;
+  --status-pending-fg: #6B6B6B;
+  --status-pending-border: #D4D4D4;
+
+  /* ---------- Derivados navy + franja gobierno (light) ----------
+     Texto sobre --sena-navy tintado desde el propio azul (no gris):
+     on-navy ≈ 13:1, on-navy-muted ≈ 6.5:1, on-navy-faint ≈ 5:1 AA. */
+  --on-navy: #F0F6FA;
+  --on-navy-muted: #9CB9CC;
+  --on-navy-faint: #7EA2BA;
+  --navy-hairline: #1A4A66;
+  --navy-deep: #01283D;
+  --flag-yellow: #FFCD00;
+  --flag-blue: #003DA5;
+  --flag-red: #CE1126;
+
+  /* ---------- Teal SI Contratista (light) ----------
+     Muestreado de contratistas.sena.edu.co (oct-2026). Texto sobre teal:
+     on-teal ≥ 6.7:1, on-teal-muted ≥ 4.6:1 AA. active-pill: verde de marca
+     oscurecido para que el texto blanco cumpla AA (4.7:1). */
+  --sena-teal: #0B5A6F;
+  --sena-teal-deep: #003A51;
+  --sena-teal-light: #005E77;
+  --on-teal: #E6F1F4;
+  --on-teal-muted: #B9D3DB;
+  --teal-hairline: #1C6A7E;
+  --active-pill: #2B8500;
+  --table-head: #E8F4E5;
+  --elevation-card: 0 1px 2px rgb(16 42 56 / 0.05), 0 6px 20px rgb(16 42 56 / 0.06);
+  --elevation-pop: 0 12px 40px rgb(16 42 56 / 0.18);
+
+  /* ---------- Mapeo shadcn ---------- */
+  --background: #EEF2F5;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  /* Texto blanco sobre verde: --active-pill cumple AA (4.7:1); #39A900 no (3.1:1). */
+  --primary: var(--active-pill);
+  --primary-foreground: #FFFFFF;
+  --secondary: #F2F2F2;
+  --secondary-foreground: #1A1A1A;
+  --muted: #F8F8F6;
+  --muted-foreground: #6B6B6B;
+  --accent: var(--sena-green-tint);
+  --accent-foreground: var(--sena-green-darker);
+  --destructive: var(--sena-coral-dark);
+  --border: #E1E6EA;
+  --input: #D5DCE1;
+  --ring: var(--sena-green);
+  --chart-1: var(--sena-green);
+  --chart-2: var(--sena-navy);
+  --chart-3: var(--sena-sky);
+  --chart-4: var(--sena-yellow);
+  --chart-5: var(--sena-coral);
+  /* Sidebar teal: el gradiente vive en el componente; aquí el tono base. */
+  --sidebar: var(--sena-teal);
+  --sidebar-foreground: var(--on-teal);
+  --sidebar-primary: var(--active-pill);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgb(255 255 255 / 0.08);
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: var(--teal-hairline);
+  --sidebar-ring: var(--sena-green-light);
+}
+
+.dark {
+  /* Superficie base navy desaturado (no negro puro) para que el
+     verde de marca respire; el verde se aclara para no vibrar. */
+  --sena-green: #6FCC3A;
+  --sena-green-dark: #39A900;
+  --sena-green-darker: #2B7A00;
+  --sena-green-light: #9EE075;
+  --sena-green-tint: #1F3820;
+  --sena-navy: #001E2E;
+  --sena-beige: #2A281E;
+  --sena-deep-green: #4A7A73;
+  --sena-coral: #E08A72;
+  --sena-coral-dark: #C96A50;
+  --sena-yellow: #FFCE40;
+  --sena-sky: #82DEF0;
+
+  /* ---------- Estados de dominio (dark) ---------- */
+  --status-ok: #6FCC3A;
+  --status-ok-soft: #1F3820;
+  --status-ok-fg: #9EE075;
+  --status-ok-border: #35592B;
+  --status-warn: #FFCE40;
+  --status-warn-soft: #3D330F;
+  --status-warn-fg: #E8C558;
+  --status-warn-border: #5C4D1A;
+  --status-caution: #E0A055;
+  --status-caution-soft: #3B2A14;
+  --status-caution-fg: #E8B36E;
+  --status-caution-border: #5C431F;
+  --status-danger: #E08A72;
+  --status-danger-soft: #3A211A;
+  --status-danger-fg: #F0A78F;
+  --status-danger-border: #5C382C;
+  --status-info: #82DEF0;
+  --status-info-soft: #16323C;
+  --status-info-fg: #8FD7E8;
+  --status-info-border: #2A5561;
+  --status-notice: #7FB4DB;
+  --status-notice-soft: #16283A;
+  --status-notice-fg: #A8CBE8;
+  --status-notice-border: #2E4B66;
+  --status-pending: #6B7078;
+  --status-pending-soft: #1C1F25;
+  --status-pending-fg: #8E949C;
+  --status-pending-border: #363940;
+
+  /* ---------- Derivados navy + franja gobierno (dark) ----------
+     El panel navy se oscurece (--sena-navy: #001E2E), así que los
+     mismos tintes azulados mantienen o superan el contraste AA. */
+  --on-navy: #F0F6FA;
+  --on-navy-muted: #9CB9CC;
+  --on-navy-faint: #7EA2BA;
+  --navy-hairline: #16394F;
+  --navy-deep: #001724;
+  --flag-yellow: #FFCD00;
+  --flag-blue: #2B62C4;
+  --flag-red: #D8404F;
+
+  /* ---------- Teal SI Contratista (dark) ---------- */
+  --sena-teal: #0A3A47;
+  --sena-teal-deep: #062631;
+  --sena-teal-light: #0E4757;
+  --on-teal: #E6F1F4;
+  --on-teal-muted: #A9C7D0;
+  --teal-hairline: #17505F;
+  --active-pill: #2B8500;
+  --table-head: #18241B;
+  --elevation-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 20px rgb(0 0 0 / 0.25);
+  --elevation-pop: 0 12px 40px rgb(0 0 0 / 0.5);
+
+  --background: #0D1015;
+  --foreground: #F2F2F2;
+  --card: #14171C;
+  --card-foreground: #F2F2F2;
+  --popover: #14171C;
+  --popover-foreground: #F2F2F2;
+  --primary: var(--sena-green);
+  --primary-foreground: #0D1015;
+  --secondary: #1C1F25;
+  --secondary-foreground: #F2F2F2;
+  --muted: #1C1F25;
+  --muted-foreground: #8E949C;
+  --accent: var(--sena-green-tint);
+  --accent-foreground: var(--sena-green-light);
+  --destructive: var(--sena-coral);
+  --border: #262930;
+  --input: #262930;
+  --ring: var(--sena-green);
+  --chart-1: #6FCC3A;
+  --chart-2: #7FB4DB;
+  --chart-3: #82DEF0;
+  --chart-4: #E0B04A;
+  --chart-5: #F59A6E;
+  --sidebar: var(--sena-teal);
+  --sidebar-foreground: var(--on-teal);
+  --sidebar-primary: var(--active-pill);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgb(255 255 255 / 0.07);
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: var(--teal-hairline);
+  --sidebar-ring: var(--sena-green);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

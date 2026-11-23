@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend · lint + typecheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+
+  backend:
+    name: Backend · ruff + pytest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      # ZajunaConfig exige credenciales; los tests usan snapshots mock,
+      # así que en CI bastan valores dummy (no hay .env en el runner).
+      ZAJUNA_DOCUMENT: "0000000000"
+      ZAJUNA_PASSWORD: "ci-dummy-password"
+      # Los tests del scraper esperan estos cursos configurados (mock, no se scrapea).
+      ZAJUNA_COURSE_IDS: "14897,14903,89977,89967,89964"
+      # La API no arranca sin secreto JWT fuerte; este solo firma tokens de prueba.
+      CMM_JWT_SECRET_KEY: "ci-only-secret-0123456789abcdef0123456789abcdef"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt ruff
+      - run: python -m ruff check src tests scripts
+      - run: python -m pytest -q

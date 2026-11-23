@@ -1,0 +1,39 @@
+# Dependabot (gratis en repos privados): PR semanales con versiones nuevas y
+# alertas de seguridad de las dependencias. El cooldown espera unos días antes
+# de proponer una versión recién publicada (paquetes comprometidos suelen
+# retirarse en ese lapso); las actualizaciones de seguridad no esperan.
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /backend
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      python:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      npm:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      # TypeScript 7 (compilador nativo) rompe typescript-eslint, que aún no lo
+      # soporta. Quitar cuando typescript-eslint anuncie soporte para TS 7.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7

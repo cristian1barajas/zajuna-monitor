@@ -1,0 +1,64 @@
+name: Seguridad
+
+# Escáneres gratuitos: secretos (gitleaks), código (Semgrep, bandit) y
+# dependencias (pip-audit, npm audit, Trivy). Corre en cada PR, en master y
+# cada lunes, porque salen CVE nuevas aunque el código no cambie.
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    - cron: "0 11 * * 1" # lunes 6:00 a. m. Colombia
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    name: Secretos · gitleaks (historial completo)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      # La imagen se corre directo: la acción oficial pide licencia en organizaciones.
+      - run: >
+          docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.30.1
+          git /repo --redact --no-banner --exit-code 1
+
+  sast:
+    name: Código · Semgrep + bandit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: >
+          docker run --rm -v "$PWD:/src" semgrep/semgrep:1.182.1
+          semgrep scan --config p/default --config p/python --config p/typescript
+          --config p/react --config p/owasp-top-ten --exclude docs --metrics=off --error /src
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: pip install bandit==1.9.4
+      # Severidad y confianza media o más; lo bajo (subprocess con lista fija, etc.) se revisó a mano.
+      - run: bandit -r backend/src -ll -ii
+
+  dependencies:
+    name: Dependencias · pip-audit + npm audit + Trivy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: pip install pip-audit==2.10.1
+      - run: pip-audit -r backend/requirements.txt
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      # Solo lo que llega a producción; las herramientas de desarrollo las vigila Dependabot.
+      - run: npm audit --omit=dev --audit-level=high
+        working-directory: frontend
+      - run: >
+          docker run --rm -v "$PWD:/src" aquasec/trivy:0.76.1
+          fs --scanners vuln,misconfig --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 /src
