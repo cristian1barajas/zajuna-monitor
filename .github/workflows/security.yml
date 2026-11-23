@@ -5,7 +5,7 @@ name: Seguridad
 # cada lunes, porque salen CVE nuevas aunque el código no cambie.
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
   schedule:
     - cron: "0 11 * * 1" # lunes 6:00 a. m. Colombia
